@@ -219,24 +219,3 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 10%
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-
-# Fallback bar configuration if polybar fails
-bar {
-    status_command i3status
-    position top
-    font pango:JetBrains Mono, FontAwesome 10
-    separator_symbol "  "
-    
-    colors {
-        background $nord0
-        statusline $nord4
-        separator $nord9
-        
-        # class            border  backgr. text
-        focused_workspace  $nord10 $nord10 $nord6
-        active_workspace   $nord3  $nord3  $nord6
-        inactive_workspace $nord1  $nord1  $nord4
-        urgent_workspace   $nord11 $nord11 $nord6
-        binding_mode       $nord13 $nord13 $nord0
-    }
-}
