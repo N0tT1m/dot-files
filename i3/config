@@ -1,37 +1,242 @@
-# Basic i3 config
-font pango:monospace 8
+# Enhanced i3 Configuration
+# Last Modified: February 28, 2025
+
+# Set mod key (Mod1=Alt, Mod4=Super/Windows)
 set $mod Mod4
+
+# Font for window titles and bar
+font pango:JetBrains Mono 10
+
+# Use Mouse+$mod to drag floating windows
 floating_modifier $mod
-bindsym $mod+Return exec i3-sensible-terminal
+
+# Terminal
+bindsym $mod+Return exec alacritty
+
+# Kill focused window
 bindsym $mod+Shift+q kill
-bindsym $mod+d exec dmenu_run
+
+# Start program launcher
+bindsym $mod+d exec --no-startup-id rofi -show drun
+
+# Change focus
 bindsym $mod+j focus left
 bindsym $mod+k focus down
 bindsym $mod+l focus up
 bindsym $mod+semicolon focus right
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
+
+# Alternatively, use cursor keys
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# Alternatively, use cursor keys to move
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split in horizontal orientation
+bindsym $mod+h split h
+
+# Split in vertical orientation
+bindsym $mod+v split v
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# Toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# Focus the parent container
+bindsym $mod+a focus parent
+
+# Define names for workspaces
+set $ws1 "1: Term"
+set $ws2 "2: Web"
+set $ws3 "3: Code"
+set $ws4 "4: Chat"
+set $ws5 "5: Media"
+set $ws6 "6: Files"
+set $ws7 "7: Gfx"
+set $ws8 "8: Misc"
+set $ws9 "9: Misc"
+set $ws10 "10: Sys"
+
+# Switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# Reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Restart i3 inplace (preserves your layout/session)
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exit
+
+# Exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'"
+
+# Resize window mode
+mode "resize" {
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Colors and UI enhancements
+# Nord color scheme
+set $nord0 #2E3440
+set $nord1 #3B4252
+set $nord2 #434C5E
+set $nord3 #4C566A
+set $nord4 #D8DEE9
+set $nord5 #E5E9F0
+set $nord6 #ECEFF4
+set $nord7 #8FBCBB
+set $nord8 #88C0D0
+set $nord9 #81A1C1
+set $nord10 #5E81AC
+set $nord11 #BF616A
+set $nord12 #D08770
+set $nord13 #EBCB8B
+set $nord14 #A3BE8C
+set $nord15 #B48EAD
+
+# Window Colors
+# class                 border  backgr. text    indicator child_border
+client.focused          $nord10 $nord10 $nord6  $nord10   $nord10
+client.focused_inactive $nord3  $nord3  $nord4  $nord3    $nord3
+client.unfocused        $nord1  $nord1  $nord4  $nord1    $nord1
+client.urgent           $nord11 $nord11 $nord6  $nord11   $nord11
+client.placeholder      $nord0  $nord0  $nord4  $nord0    $nord0
+client.background       $nord0
+
+# i3-gaps specific configurations
+for_window [class="^.*"] border pixel 2
+gaps inner 15
+gaps outer 5
+smart_borders on
+smart_gaps on
+
+# Disable titlebar on all windows
+for_window [class=".*"] border pixel 2
+
+# Specific application settings
+# Make certain applications float by default
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Nitrogen"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Arandr"] floating enable
+for_window [class="Galculator"] floating enable
+
+# Assign applications to specific workspaces
+assign [class="firefox"] $ws2
+assign [class="code-oss"] $ws3
+assign [class="discord"] $ws4
+assign [class="spotify"] $ws5
+
+# Startup applications
+# Polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# Compositor for transparency and animations
+exec --no-startup-id picom --backend glx
+
+# Set wallpaper
+exec --no-startup-id nitrogen --restore
+
+# Network manager applet
+exec --no-startup-id nm-applet
+
+# Volume control
+exec --no-startup-id volumeicon
+
+# Notification daemon
+exec --no-startup-id dunst
+
+# Lock screen command (changed to avoid conflict with focus up)
+bindsym $mod+Shift+x exec --no-startup-id betterlockscreen -l blur
+
+# Screenshots with Flameshot
+bindsym Print exec --no-startup-id flameshot gui
+
+# Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Brightness controls
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +10%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 10%
+
+# Media player controls
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+
+# Fallback bar configuration if polybar fails
 bar {
     status_command i3status
-}# Basic i3 config
-font pango:monospace 8
-set $mod Mod4
-floating_modifier $mod
-bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Shift+q kill
-bindsym $mod+d exec dmenu_run
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exit
-bar {
-    status_command i3status
+    position top
+    font pango:JetBrains Mono, FontAwesome 10
+    separator_symbol "  "
+    
+    colors {
+        background $nord0
+        statusline $nord4
+        separator $nord9
+        
+        # class            border  backgr. text
+        focused_workspace  $nord10 $nord10 $nord6
+        active_workspace   $nord3  $nord3  $nord6
+        inactive_workspace $nord1  $nord1  $nord4
+        urgent_workspace   $nord11 $nord11 $nord6
+        binding_mode       $nord13 $nord13 $nord0
+    }
 }
