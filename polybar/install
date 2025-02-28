@@ -1,0 +1,1 @@
+sudo pacman -S ttf-jetbrains-mono ttf-font-awesome ttf-material-icons noto-fonts-emoji
